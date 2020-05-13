@@ -17,4 +17,6 @@ RUN poetry install --no-dev --no-interaction --no-ansi
 
 COPY . .
 
+EXPOSE 5000/tcp
+
 CMD ["gunicorn", "--bind 0.0.0.0:5000", "flask_app:app"]
