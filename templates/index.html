@@ -21,7 +21,7 @@
     </div>
 
     <div class="alert alert-warning">
-        <strong>Warning!</strong> This is a early test.
+        <strong>Warning!</strong> This is an early test.
     </div>
 
     <div class="container">
@@ -186,7 +186,7 @@
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify(formDict),
                 success: function (data, textStatus, jQxhr) {
-                    $("#textRendered").empty().append(data["template"]);
+                    $("#textRendered").text(data["template"]);
                 },
                 error: function (jqXhr, textStatus, errorThrown) {
                     console.log(errorThrown);
