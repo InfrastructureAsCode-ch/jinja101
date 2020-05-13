@@ -23,7 +23,7 @@ poetry shell
 python flask_app.py
 ```
 
-### Formant python document (first open shell)
+### Format python document (first open shell)
 
 ```bash
 black flask_app.py
