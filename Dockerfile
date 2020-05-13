@@ -6,8 +6,8 @@ ENV PATH="/root/.poetry/bin:$PATH" \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
-RUN apt-get update \
-    && apt-get install -yq curl \
+RUN apk add --update curl \
+    && rm -rf /var/cache/apk/* \
     && curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python \
     && poetry config virtualenvs.create false
 
