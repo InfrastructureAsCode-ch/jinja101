@@ -20,8 +20,10 @@
         <p>Playground for jinja2 templates</p>
     </div>
 
-    <div class="alert alert-warning">
-        <strong>Warning!</strong> This is an early test.
+    <div id="alerts">
+        <div class="alert alert-warning">
+            <strong>Warning!</strong> This is an early test.
+        </div>
     </div>
 
     <div class="container">
@@ -37,74 +39,72 @@
                     </p>
                     <div class="collapse" id="environmentSettings">
                         <p>
-                            <div class="card card-body">
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="trim_blocks" name="trim_blocks">
-                                    <label class="form-check-label" for="trim_blocks">trim_blocks</label>
-                                    <small id="trimHelp" class="form-text text-muted">If this is set to True the first
-                                        newline after a block is removed (block, not variable tag!). Defaults to
-                                        False.</small>
-                                </div>
-
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="lstrip_blocks"
-                                        name="lstrip_blocks">
-                                    <label class="form-check-label" for="lstrip_blocks">lstrip_blocks</label>
-                                    <small id="lstripHelp" class="form-text text-muted">If this is set to True leading
-                                        spaces and tabs are stripped from the start of a line to a block. Defaults to
-                                        False.</small>
-                                </div>
-
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="keep_trailing_newline"
-                                        name="keep_trailing_newline">
-                                    <label class="form-check-label"
-                                        for="keep_trailing_newline">keep_trailing_newline</label>
-                                    <small id="trailingHelp" class="form-text text-muted">Preserve the trailing newline
-                                        when
-                                        rendering templates. The default is False, which causes a single newline, if
-                                        present, to be stripped from the end of the template.</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="newline_sequence">newline_sequence</label>
-                                    <input type="text" class="form-control" id="newline_sequence"
-                                        aria-describedby="newlineHelp" placeholder="\n" value="\n"
-                                        name="newline_sequence">
-                                    <small id="newlineHelp" class="form-text text-muted">The sequence that starts a
-                                        newline.
-                                        Must be one of '\r', '\n' or '\r\n'. The default is '\n' which is a useful
-                                        default
-                                        for Linux and OS X systems as well as web applications.</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="mr-sm-2" for="undefined">Extensions</label>
-                                    <select class="custom-select" id="extensions" name="extensions" multiple>
-                                        <option value="jinja2.ext.i18n">i18n</option>
-                                        <option value="jinja2.ext.do">do</option>
-                                        <option value="jinja2.ext.loopcontrols">loopcontrols</option>
-                                        <option value="jinja2.ext.debug">debug</option>
-                                    </select>
-                                    <small id="extensionsHelp" class="form-text text-muted">List of Jinja extensions to
-                                        use.
-                                        This can either be import paths as strings or extension classes. For more
-                                        information have a look at the extensions documentation.</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="mr-sm-2" for="undefined">Undefined</label>
-                                    <select class="custom-select" id="undefined" name="undefined">
-                                        <option value="jinja2.Undefined">Undefined</option>
-                                        <option value="jinja2.ChainableUndefined">ChainableUndefined</option>
-                                        <option value="jinja2.DebugUndefined">DebugUndefined</option>
-                                        <option value="jinja2.StrictUndefined">StrictUndefined</option>
-                                    </select>
-                                    <small id="undefinedHelp" class="form-text text-muted">Undefined or a subclass of it
-                                        that is used to represent undefined values in the template</small>
-                                </div>
-
+                        <div class="card card-body">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="trim_blocks" name="trim_blocks">
+                                <label class="form-check-label" for="trim_blocks">trim_blocks</label>
+                                <small id="trimHelp" class="form-text text-muted">If this is set to True the first
+                                    newline after a block is removed (block, not variable tag!). Defaults to
+                                    False.</small>
                             </div>
+
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="lstrip_blocks" name="lstrip_blocks">
+                                <label class="form-check-label" for="lstrip_blocks">lstrip_blocks</label>
+                                <small id="lstripHelp" class="form-text text-muted">If this is set to True leading
+                                    spaces and tabs are stripped from the start of a line to a block. Defaults to
+                                    False.</small>
+                            </div>
+
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="keep_trailing_newline"
+                                    name="keep_trailing_newline">
+                                <label class="form-check-label"
+                                    for="keep_trailing_newline">keep_trailing_newline</label>
+                                <small id="trailingHelp" class="form-text text-muted">Preserve the trailing newline
+                                    when
+                                    rendering templates. The default is False, which causes a single newline, if
+                                    present, to be stripped from the end of the template.</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="newline_sequence">newline_sequence</label>
+                                <input type="text" class="form-control" id="newline_sequence"
+                                    aria-describedby="newlineHelp" placeholder="\n" value="\n" name="newline_sequence">
+                                <small id="newlineHelp" class="form-text text-muted">The sequence that starts a
+                                    newline.
+                                    Must be one of '\r', '\n' or '\r\n'. The default is '\n' which is a useful
+                                    default
+                                    for Linux and OS X systems as well as web applications.</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="mr-sm-2" for="undefined">Extensions</label>
+                                <select class="custom-select" id="extensions" name="extensions" multiple>
+                                    <option value="jinja2.ext.i18n">i18n</option>
+                                    <option value="jinja2.ext.do">do</option>
+                                    <option value="jinja2.ext.loopcontrols">loopcontrols</option>
+                                    <option value="jinja2.ext.debug">debug</option>
+                                </select>
+                                <small id="extensionsHelp" class="form-text text-muted">List of Jinja extensions to
+                                    use.
+                                    This can either be import paths as strings or extension classes. For more
+                                    information have a look at the extensions documentation.</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="mr-sm-2" for="undefined">Undefined</label>
+                                <select class="custom-select" id="undefined" name="undefined">
+                                    <option value="jinja2.Undefined">Undefined</option>
+                                    <option value="jinja2.ChainableUndefined">ChainableUndefined</option>
+                                    <option value="jinja2.DebugUndefined">DebugUndefined</option>
+                                    <option value="jinja2.StrictUndefined">StrictUndefined</option>
+                                </select>
+                                <small id="undefinedHelp" class="form-text text-muted">Undefined or a subclass of it
+                                    that is used to represent undefined values in the template</small>
+                            </div>
+
+                        </div>
                         </p>
                     </div>
                 </div>
@@ -187,9 +187,15 @@
                 data: JSON.stringify(formDict),
                 success: function (data, textStatus, jQxhr) {
                     $("#textRendered").text(data["template"]);
+                    $(".alert").alert('close')
                 },
                 error: function (jqXhr, textStatus, errorThrown) {
-                    console.log(errorThrown);
+                    console.log(jqXhr)
+                    var errorData = jqXhr.responseJSON
+                    console.log(errorData.error)
+                    console.log(errorData.msg)
+                    $(".alert").alert('close')
+                    $("#alerts").append("<div class='alert alert-danger' role='alert'><h4 class='alert-heading'>" + errorData.error + "</h4><p>" + errorData.msg + "</p></div>")
                 }
             });
 
