@@ -29,6 +29,10 @@ def demo():
 @app.route("/rend", methods=["POST"])
 def rend():
     data = request.get_json()
+    if not isinstance(data, dict):
+        resp = jsonify({"error": "Invalid JSON"})
+        resp.status_code = 400
+        return resp
     trim_blocks = bool(data.get("trim_blocks"))
     lstrip_blocks = bool(data.get("lstrip_blocks"))
     keep_trailing_newline = bool(data.get("keep_trailing_newline"))
@@ -53,9 +57,18 @@ def rend():
         )
         template = jinja_env.from_string(raw_template)
         output = template.render(**yaml_data)
-        return jsonify({"template": output})
+        resp = jsonify({"template": output})
+    except yaml.error.YAMLError as e:
+        resp = jsonify({"error": f"YAML {type(e).__name__}", "msg": str(e)})
+        resp.status_code = 400
+    except jinja2.exceptions.TemplateError as e:
+        resp = jsonify({"error": f"Jinja {type(e).__name__}", "msg": str(e)})
+        resp.status_code = 400
     except Exception as e:
-        return Response(response=f"Exception: {e}", status=500)
+        resp = jsonify({"error": f"Error {type(e).__name__}", "msg": str(e)})
+        resp.status_code = 400
+    finally:
+        return resp
 
 
 if __name__ == "__main__":
