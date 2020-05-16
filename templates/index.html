@@ -12,6 +12,12 @@
 
     <title>Jinja101</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+    <style>
+        .jumbotron{
+            padding: 17px
+        }
+    </style>
 </head>
 
 <body>
@@ -110,22 +116,22 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-lg-4">
                     <div class="form-group">
                         <label for="textData">Data <small>YAML</small></label>
-                        <textarea class="form-control" id="textData" name="data" rows="20"></textarea>
+                        <textarea class="form-control text-monospace" id="textData" name="data" rows="20"></textarea>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-lg-4">
                     <div class="form-group">
                         <label for="textTemplate">Template <small>jinja2</small></label>
-                        <textarea class="form-control" id="textTemplate" name="template" rows="20"></textarea>
+                        <textarea class="form-control text-monospace" id="textTemplate" name="template" rows="20"></textarea>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-lg-4">
                     <div class="form-group">
                         <label for="textRendered" disabled>Rendered <small>Text</small></label>
-                        <textarea class="form-control" id="textRendered" rows="20" disabled>
+                        <textarea class="form-control text-monospace" id="textRendered" rows="20" disabled>
                 </textarea>
                     </div>
                 </div>
