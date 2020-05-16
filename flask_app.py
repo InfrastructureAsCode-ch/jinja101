@@ -1,7 +1,7 @@
 import json
 import jinja2
 import yaml
-from jinja2 import Environment
+from jinja2.sandbox import SandboxedEnvironment
 from flask import Flask, render_template, request, Response, url_for, jsonify
 
 app = Flask(__name__, static_url_path="/static")
@@ -47,7 +47,7 @@ def rend():
         if not isinstance(yaml_data, dict):
             yaml_data = {"data": yaml_data}
 
-        jinja_env = Environment(
+        jinja_env = SandboxedEnvironment(
             trim_blocks=trim_blocks,
             lstrip_blocks=lstrip_blocks,
             keep_trailing_newline=keep_trailing_newline,
