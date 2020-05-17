@@ -198,7 +198,7 @@
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify(formDict),
                 success: function (data, textStatus, jQxhr) {
-                    $("#textRendered").text(data["template"]);
+                    $("#textRendered")[0].value = [data["template"]];
                     $(".alert").alert('close')
                 },
                 error: function (jqXhr, textStatus, errorThrown) {
