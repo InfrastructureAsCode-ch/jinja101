@@ -22,8 +22,9 @@ def index():
 
 
 @app.route("/demo")
-def demo():
-    return render_template("demo.html")
+@app.route("/demo/<name>")
+def demo(name=False):
+    return render_template("demo.html", name=name)
 
 
 @app.route("/rend", methods=["POST"])

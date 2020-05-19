@@ -5,7 +5,11 @@
     <body>
         <h1>This is a Demo</h1>
         <p>
-            This is a static simple demo page.
+{% if name %}
+Hello {{ name }}
+{% else %}
+This is a static simple demo page.
+{% endif %}
         </p>
     </body>
 </html>
