@@ -3,6 +3,7 @@ import jinja2
 import yaml
 from jinja2.sandbox import SandboxedEnvironment
 from flask import Flask, render_template, request, Response, url_for, jsonify
+from load_filter import load_filter_ansible, load_filter_salt, load_filter_st2
 
 app = Flask(__name__, static_url_path="/static")
 
@@ -42,6 +43,7 @@ def rend():
     extenstions = [extenstions] if isinstance(extenstions, str) else extenstions
     undefined = MAP_UNDEFINED.get(data.get("undefined"), jinja2.Undefined)
     raw_template = data.get("template", "")
+    load_filter = data.get("filter", "default")
 
     try:
         yaml_data = yaml.safe_load(data.get("data")) or {}
@@ -56,6 +58,13 @@ def rend():
             extensions=extenstions,
             undefined=undefined,
         )
+        if load_filter == "ansible":
+            load_filter_ansible(jinja_env)
+        if load_filter == "salt":
+            load_filter_salt(jinja_env)
+        if load_filter == "st2":
+            load_filter_salt(jinja_env)
+
         template = jinja_env.from_string(raw_template)
         output = template.render(**yaml_data)
         resp = jsonify({"template": output})

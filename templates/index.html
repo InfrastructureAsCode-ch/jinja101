@@ -34,9 +34,7 @@
     </div>
 
     <div id="alerts">
-        <div class="alert alert-warning">
-            <strong>Warning!</strong> This is an early test.
-        </div>
+        
     </div>
 
     <div class="container">
@@ -115,6 +113,17 @@
                                 </select>
                                 <small id="undefinedHelp" class="form-text text-muted">Undefined or a subclass of it
                                     that is used to represent undefined values in the template</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="mr-sm-2" for="filter">Filter</label>
+                                <select class="custom-select" id="filter" name="filter">
+                                    <option value="default">Default (Buit-in)</option>
+                                    <option value="ansible">Ansible <small>(Beta)</small></option>
+                                    <option value="salt">SaltStack <small>(Beta)</small></option>
+                                    <option value="st2" disabled>StackStorm <small>(Comming soon)</small></option>
+                                </select>
+                                <small id="filterHelp" class="form-text text-muted">Filter imported from tools</small>
                             </div>
 
                         </div>
