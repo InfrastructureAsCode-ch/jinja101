@@ -12,6 +12,8 @@ def load_filter_salt(env):
     from salt.utils.decorators.jinja import JinjaFilter, JinjaTest
 
     env.filters.update(JinjaFilter.salt_jinja_filters)
+    env.filters["http_query"] = lambda x: f"http_query disabled {x}"
+
     env.tests.update(JinjaTest.salt_jinja_tests)
 
 
