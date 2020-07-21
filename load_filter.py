@@ -16,4 +16,8 @@ def load_filter_salt(env):
 
 
 def load_filter_st2(env):
-    pass
+    from st2common.util.jinja import get_filters
+
+    env.filters.update(get_filters())
+    # https://github.com/StackStorm/st2/blob/master/st2common/st2common/util/jinja.py#L110
+    env.tests['in'] = lambda item, list: item in list

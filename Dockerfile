@@ -6,6 +6,7 @@ ENV PATH="/root/.poetry/bin:$PATH" \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
+
 RUN apt-get update && apt-get install curl -y \
     && rm -rf /var/lib/apt/lists/* \
     && curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python \
@@ -14,7 +15,9 @@ RUN apt-get update && apt-get install curl -y \
 COPY pyproject.toml .
 COPY poetry.lock .
 
-RUN poetry install --no-dev --no-interaction --no-ansi
+# poetry does not support subdirectory yet
+RUN pip install "git+https://github.com/StackStorm/st2.git#egg=version_subpkg&subdirectory=st2common" \
+    && poetry install --no-dev --no-interaction --no-ansi
 
 COPY . .
 
