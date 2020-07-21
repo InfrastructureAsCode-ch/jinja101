@@ -13,6 +13,7 @@ ansible = "^2.9.11"
 salt = "^3001"
 netaddr = "^0.8.0"
 timelib = "^0.2.4"
+jmespath = "^0.10.0"
 
 [tool.poetry.dev-dependencies]
 black = "^19.10b0"
