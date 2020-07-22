@@ -1,6 +1,6 @@
 def load_filter_ansible(env):
     from ansible.plugins.loader import filter_loader, test_loader
-    
+
     for fp in filter_loader.all():
         env.filters.update(fp.filters())
     for fp in test_loader.all():
@@ -22,4 +22,4 @@ def load_filter_st2(env):
 
     env.filters.update(get_filters())
     # https://github.com/StackStorm/st2/blob/master/st2common/st2common/util/jinja.py#L110
-    env.tests['in'] = lambda item, list: item in list
+    env.tests["in"] = lambda item, list: item in list

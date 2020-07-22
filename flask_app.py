@@ -38,7 +38,7 @@ def examples():
         resp = jsonify({"error": f"Error {type(e).__name__}", "msg": str(e)})
         resp.status_code = 400
     finally:
-        return resp 
+        return resp
 
 
 @app.route("/rend", methods=["POST"])
