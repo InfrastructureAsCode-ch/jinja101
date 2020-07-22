@@ -28,6 +28,19 @@ def demo(name=False):
     return render_template("demo.html", name=name)
 
 
+@app.route("/examples")
+def examples():
+    try:
+        with open("examples.yaml", "r") as f:
+            data = yaml.safe_load(f)
+        resp = jsonify(data)
+    except Exception as e:
+        resp = jsonify({"error": f"Error {type(e).__name__}", "msg": str(e)})
+        resp.status_code = 400
+    finally:
+        return resp 
+
+
 @app.route("/rend", methods=["POST"])
 def rend():
     data = request.get_json()
