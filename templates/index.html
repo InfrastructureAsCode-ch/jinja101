@@ -17,12 +17,14 @@
         @font-face {
             font-family: CourierDotSpace;
             src: url(static/CourierDotSpace-Regular.otf);
-          }
-        .jumbotron{
+        }
+
+        .jumbotron {
             padding: 17px
         }
-        .show-spaces{
-            font-family: CourierDotSpace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace!important;
+
+        .show-spaces {
+            font-family: CourierDotSpace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
         }
     </style>
 </head>
@@ -34,10 +36,10 @@
     </div>
 
     <div id="alerts">
-        
+
     </div>
 
-    <div class="container">
+    <div class="container-fluid">
         <form id="templateForm" method="POST" action="rend">
             <div class="row">
                 <div class="col">
@@ -141,7 +143,8 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label for="textTemplate">Template <small>jinja2</small></label>
-                        <textarea class="form-control show-spaces" id="textTemplate" name="template" rows="20"></textarea>
+                        <textarea class="form-control show-spaces" id="textTemplate" name="template"
+                            rows="20"></textarea>
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -152,15 +155,25 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col">
-                    <p>
+                <div class="col-auto">
+                    <div>
                         <button class="btn btn-primary" type="submit">
                             Render Template
                         </button>
-                    </p>
+                    </div>
+                </div>
+                <div class="col-auto mr-auto ">
+                    <div class="dropdown">
+                        <button id="examples" class="btn btn-primary dropdown-toggle" type="button"
+                            data-toggle="dropdown">Examples
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </form>
+    </div>
+    </form>
     </div>
 
     <!-- Optional JavaScript -->
@@ -220,6 +233,42 @@
                 }
             });
 
+        });
+
+
+        let exampleMap = new Map()
+        function updateForm(exampleName) {
+            var data = exampleMap.get(exampleName)
+            $("#textData")[0].value = [data["data"]];
+            $("#textTemplate")[0].value = [data["template"]];
+        }
+
+        $(document).ready(function () {
+            $(".dropdown").on("show.bs.dropdown", function () {
+                $(".dropdown-menu").html('<li><a href="#">Loading ...</a></li>');
+                $.ajax({
+                    url: "examples",
+                    dataType: "json",
+                    type: "get",
+                    success: function (data, textStatus, jQxhr) {
+                        $(".dropdown-menu").html('');
+                        exampleMap = new Map()
+                        $.each(data, function(key, value) {
+                            exampleMap.set(key, value)
+                            $(".dropdown-menu").append('<li><a href="#" onclick="updateForm(\'' + key + '\')">' + key + '</a></li>');
+                        });
+                        $(".dropdown-toggle").dropdown('update')
+                    },
+                    error: function (jqXhr, textStatus, errorThrown) {
+                        var errorData = jqXhr.responseJSON
+                        console.log("Get examples failed")
+                        console.log(errorData.error)
+                        console.log(errorData.msg)
+                        $(".alert").alert('close')
+                        $("#alerts").append("<div class='alert alert-danger' role='alert'><h4 class='alert-heading'>" + errorData.error + "</h4><p>" + errorData.msg + "</p></div>")
+                    }
+                });
+            });
         });
 
     </script>

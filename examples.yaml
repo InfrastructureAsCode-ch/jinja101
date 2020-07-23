@@ -1,0 +1,234 @@
+Hello:
+    template: "Hello {{ name }}!"
+    data: "name: Urs"
+
+"Nice words":
+    data: |
+      name: Urs
+      pickups_lines:
+        - Well, here I am. What are your other two wishes?
+        - Are you from Tennessee? Because you're the only 10 I see!
+        - I wish I were cross-eyed so I can see you twice.
+        - I’m learning about important dates in history. Wanna be one of them?
+        - Do you like Star Wars? Because Yoda only one for me!
+    template: |
+      Hi {{ name}}
+      {{ pickups_lines | random }}
+
+"MacDonald Farm":
+    data: |
+      animals:
+        cow: moo
+        pig: oink
+        duck: quack
+    template: |
+        {% for animal, sound in animals.items() %}
+        Old MacDonald had a farm, E I E I O,
+        And on his farm he had a {{animal}}, E I E I O.
+        With a {{sound}} {{sound}} here and a {{sound}} {{sound}} there,
+        Here a {{sound}}, there a {{sound}}, everywhere a {{sound}} {{sound}}.
+        Old MacDonald had a farm, E I E I O.
+        {% endfor %}
+
+Interface:
+    template: |
+      {% for interface in interfaces %}
+      interface {{ interface.name }}
+       ip address {{ interface.addr }} {{ interface.mask}}
+      {% endfor %}
+    data: |
+      interfaces:
+        - name: Loopback0
+          addr: 10.10.10.10
+          mask: 255.255.255.255
+        - name: Ethernet0/1
+          addr: 192.168.1.1
+          mask: 255.255.255.0
+
+"Linux bond0":
+    data: |
+      interfaces:
+        - eno1
+        - eno2
+      ip: 192.168.1.10/24
+      gw: 192.168.1.1
+      dns:
+        - 1.1.1.1
+        - 8.8.8.8
+    template: |
+        network:
+            version: 2
+            renderer: networkd
+            bonds:
+                bond0:
+                    interfaces: {{interfaces}}
+                    addresses: [{{ip}}]
+                    gateway4: {{gw}}
+                    parameters:
+                        mode: 802.3ad
+                    nameservers:
+                        search: [subdomain.example.com]
+                        addresses: {{dns}}
+                    dhcp4: false
+                    optional: true
+
+SegmentRouting:
+    data: |
+        id: 3
+        interfaces:
+          # interface number and
+          # the connected neighbor ID
+          0: 16
+          1: 18
+        services:
+          - name: cust1
+            number: 1
+          - name: cust2
+            number: 2
+        bgp:
+          neighbors:
+            - 1
+            - 2
+    template: |
+        {# This example is not a perfect template. It's for demonstration #}
+        hostname R{{ "%02d"|format(id)}}
+        !
+        !
+        address-family ipv4 unicast
+        !
+        cdp
+        !
+        {% set lo0v4 = "{0}.{0}.{0}.{0}".format(id) %}
+        interface Loopback0
+        ipv4 address {{lo0v4}} 255.255.255.255
+        ipv6 address 3001::{{id}}:{{id}}:{{id}}:{{id}}/128
+        !
+        {% for i, n in interfaces.items() %}
+        {% set sorted_id = [n, id] | sort %}
+        interface GigabitEthernet0/0/0/{{ i }}
+        description to_R{{ "%02d"|format(n) }}
+        ipv6 address 3001::10:{{ sorted_id[0] }}:{{ sorted_id[1] }}:{{id}}/112
+        no shutdown
+        cdp
+        !
+        {% endfor %}
+        !
+        router isis 1
+        is-type level-2-only
+        net 47.0000.0000.00{{ "%02d"|format(id) }}.00
+        address-family ipv6 unicast
+        metric-style wide
+        !
+        !
+        interface Loopback0
+        address-family ipv6 unicast
+        !
+        !
+        {% for i, n in interfaces.items() %}
+        interface GigabitEthernet0/0/0/{{ i }}
+        point-to-point
+        address-family ipv6 unicast
+        fast-reroute per-prefix
+        fast-reroute per-prefix ti-lfa
+        !
+        !
+        {% endfor %}
+        !
+        {% for s in services %}
+        vrf vrf_{{ s['name'] }}
+        rd 65100:{{ s['number'] }}
+        address-family ipv4 unicast
+        import route-target
+        65100:{{ s['number'] }}
+        !
+        export route-target
+        65100:{{ s['number'] }}
+        !
+        !
+        !
+        {% endfor %}
+        {% for s in services %}
+        interface Loopback{{ 100 + s['number'] }}
+        vrf vrf_{{ s['name'] }}
+        ipv4 address {{ s['number'] % 255 }}.0.0.{{ id }} 255.255.255.255
+        !
+        {% endfor %}
+        !
+        router isis 1
+        address-family ipv6 unicast
+        segment-routing srv6
+        locator R{{"%02d"|format(id)}}
+        !
+        !
+        !
+        {% if bgp is defined %}
+        router bgp 65100
+        bgp router-id {{lo0v4}}
+        address-family ipv4 unicast
+        !
+        address-family vpnv4 unicast
+        segment-routing srv6
+        locator R{{"%02d"|format(id)}}
+        !
+        !
+        {% for nid in bgp.neighbors %}
+        neighbor 3001::{{nid}}:{{nid}}:{{nid}}:{{nid}}
+        remote-as 65100
+        update-source Loopback0
+        address-family vpnv4 unicast
+        soft-reconfiguration inbound always
+        !
+        {% endfor %}
+        !
+        {% for s in services %}
+        vrf vrf_{{ s['name'] }}
+        rd 65100:{{ s['number'] }}
+        address-family ipv4 unicast
+        segment-routing srv6
+            alloc mode per-vrf
+        !
+        redistribute connected
+        !
+        !
+        {% endfor %}
+        !
+        segment-routing
+        srv6
+        encapsulation
+        source-address 3001::{{id}}:{{id}}:{{id}}:{{id}}
+        !
+        locators
+        locator R{{"%02d"|format(id)}}
+            prefix cafe:0:0:{{id}}::/64
+        !
+        !
+        !
+        !
+        {% endif %}
+
+Ansible Filter:
+    data: |
+        my_list1: [3, [4, 2] ]
+        my_list2: [3, 2, 5]
+        files:
+          users: /etc/passwd
+          groups: /etc/group
+
+        ip_net: 172.16.0.0/16
+
+        text: Ansible
+    template: |
+        {#- Ansible filter demo.
+        Select Ansible in the environment settings -#}
+
+        {{ my_list1 | flatten }}
+        {{ my_list1 | flatten | symmetric_difference(my_list2) }}
+        {{ files | dict2items(key_name='file', value_name='path') | to_nice_yaml }}
+        
+        {{ '52:54:00' | random_mac }}
+        {% for i in range(10, 20) %}
+        {{ ip_net | ipaddr(i) }}{% endfor %}
+
+        {{ text | hash('sha1') }}
+        {{ text | hash('md5') }}
+        {{ text | password_hash('sha512') }}
