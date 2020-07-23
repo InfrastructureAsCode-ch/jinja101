@@ -6,6 +6,7 @@ from flask import Flask, render_template, request, Response, url_for, jsonify
 from load_filter import load_filter_ansible, load_filter_salt, load_filter_st2
 
 app = Flask(__name__, static_url_path="/static")
+app.config['JSON_SORT_KEYS'] = False
 
 MAP_UNDEFINED = {
     "jinja2.Undefined": jinja2.Undefined,

@@ -1,21 +1,19 @@
 Hello:
-    template: "Hello {{ name }}"
+    template: "Hello {{ name }}!"
     data: "name: Urs"
 
-Interface:
-    template: |
-      {% for interface in interfaces %}
-      interface {{ interface.name }}
-       ip address {{ interface.addr }} {{ interface.mask}}
-      {% endfor %}
+"Nice words":
     data: |
-      interfaces:
-        - name: Loopback0
-          addr: 10.10.10.10
-          mask: 255.255.255.255
-        - name: Ethernet0/1
-          addr: 192.168.1.1
-          mask: 255.255.255.0
+      name: Urs
+      pickups_lines:
+        - Well, here I am. What are your other two wishes?
+        - Are you from Tennessee? Because you're the only 10 I see!
+        - I wish I were cross-eyed so I can see you twice.
+        - I’m learning about important dates in history. Wanna be one of them?
+        - Do you like Star Wars? Because Yoda only one for me!
+    template: |
+      Hi {{ name}}
+      {{ pickups_lines | random }}
 
 "MacDonald Farm":
     data: |
@@ -32,18 +30,20 @@ Interface:
         Old MacDonald had a farm, E I E I O.
         {% endfor %}
 
-"Nice words":
-    data: |
-      name: Urs
-      pickups_lines:
-        - Well, here I am. What are your other two wishes?
-        - Are you from Tennessee? Because you're the only 10 I see!
-        - I wish I were cross-eyed so I can see you twice.
-        - I’m learning about important dates in history. Wanna be one of them?
-        - Do you like Star Wars? Because Yoda only one for me!
+Interface:
     template: |
-      Hi {{ name}}
-      {{ pickups_lines | random }}
+      {% for interface in interfaces %}
+      interface {{ interface.name }}
+       ip address {{ interface.addr }} {{ interface.mask}}
+      {% endfor %}
+    data: |
+      interfaces:
+        - name: Loopback0
+          addr: 10.10.10.10
+          mask: 255.255.255.255
+        - name: Ethernet0/1
+          addr: 192.168.1.1
+          mask: 255.255.255.0
 
 "Linux bond0":
     data: |
@@ -205,3 +205,30 @@ SegmentRouting:
         !
         !
         {% endif %}
+
+Ansible Filter:
+    data: |
+        my_list1: [3, [4, 2] ]
+        my_list2: [3, 2, 5]
+        files:
+          users: /etc/passwd
+          groups: /etc/group
+
+        ip_net: 172.16.0.0/16
+
+        text: Ansible
+    template: |
+        {#- Ansible filter demo.
+        Select Ansible in the environment settings -#}
+
+        {{ my_list1 | flatten }}
+        {{ my_list1 | flatten | symmetric_difference(my_list2) }}
+        {{ files | dict2items(key_name='file', value_name='path') | to_nice_yaml }}
+        
+        {{ '52:54:00' | random_mac }}
+        {% for i in range(10, 20) %}
+        {{ ip_net | ipaddr(i) }}{% endfor %}
+
+        {{ text | hash('sha1') }}
+        {{ text | hash('md5') }}
+        {{ text | password_hash('sha512') }}
