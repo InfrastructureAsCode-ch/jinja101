@@ -39,7 +39,7 @@
 
     </div>
 
-    <div class="container">
+    <div class="container-fluid">
         <form id="templateForm" method="POST" action="rend">
             <div class="row">
                 <div class="col">
@@ -253,10 +253,10 @@
                     success: function (data, textStatus, jQxhr) {
                         $(".dropdown-menu").html('');
                         exampleMap = new Map()
-                        for (const [key, value] of Object.entries(data)) {
+                        $.each(data, function(key, value) {
                             exampleMap.set(key, value)
                             $(".dropdown-menu").append('<li><a href="#" onclick="updateForm(\'' + key + '\')">' + key + '</a></li>');
-                        }
+                        });
                         $(".dropdown-toggle").dropdown('update')
                     },
                     error: function (jqXhr, textStatus, errorThrown) {
