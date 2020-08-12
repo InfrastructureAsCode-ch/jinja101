@@ -77,7 +77,7 @@ def rend():
         if load_filter == "salt":
             load_filter_salt(jinja_env)
         if load_filter == "st2":
-            load_filter_salt(jinja_env)
+            load_filter_st2(jinja_env)
 
         template = jinja_env.from_string(raw_template)
         output = template.render(**yaml_data)

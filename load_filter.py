@@ -13,6 +13,8 @@ def load_filter_salt(env):
 
     env.filters.update(JinjaFilter.salt_jinja_filters)
     env.filters["http_query"] = lambda x: f"http_query disabled {x}"
+    env.filters["method_call"] = lambda x: f"method_call disabled {x}"
+    env.filters["dns_check"] = lambda x: f"dns_check disabled {x}"
 
     env.tests.update(JinjaTest.salt_jinja_tests)
 
