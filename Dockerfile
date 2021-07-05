@@ -18,8 +18,9 @@ COPY --chown=jinja101:jinja101 pyproject.toml .
 COPY --chown=jinja101:jinja101 poetry.lock .
 
 # poetry does not support subdirectory yet
-# RUN pip install "git+https://github.com/StackStorm/st2.git#egg=version_subpkg&subdirectory=st2common" \
-#     && poetry install --no-dev --no-interaction --no-ansi
+RUN pip install "git+https://github.com/StackStorm/st2-rbac-backend.git@master#egg=st2-rbac-backend" \
+    && pip install "git+https://github.com/StackStorm/st2.git@v3.3.0#subdirectory=st2common" \
+    && poetry install --no-dev --no-interaction --no-ansi
 
 RUN poetry install --no-dev --no-interaction --no-ansi
 
