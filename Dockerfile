@@ -1,7 +1,9 @@
 ARG PYTHON
 FROM python:3.8
 
-WORKDIR /code
+WORKDIR /jinja101
+RUN useradd -m jinja101
+
 ENV PATH="/root/.poetry/bin:$PATH" \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
@@ -12,14 +14,18 @@ RUN apt-get update && apt-get install curl -y \
     && curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python \
     && poetry config virtualenvs.create false
 
-COPY pyproject.toml .
-COPY poetry.lock .
+COPY --chown=jinja101:jinja101 pyproject.toml .
+COPY --chown=jinja101:jinja101 poetry.lock .
 
 # poetry does not support subdirectory yet
-RUN pip install "git+https://github.com/StackStorm/st2.git#egg=version_subpkg&subdirectory=st2common" \
-    && poetry install --no-dev --no-interaction --no-ansi
+# RUN pip install "git+https://github.com/StackStorm/st2.git#egg=version_subpkg&subdirectory=st2common" \
+#     && poetry install --no-dev --no-interaction --no-ansi
 
-COPY . .
+RUN poetry install --no-dev --no-interaction --no-ansi
+
+COPY --chown=jinja101:jinja101 . .
+
+USER jinja101
 
 EXPOSE 5000/tcp
 
