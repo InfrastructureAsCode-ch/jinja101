@@ -225,10 +225,67 @@ Ansible Filter:
         {{ my_list1 | flatten | symmetric_difference(my_list2) }}
         {{ files | dict2items(key_name='file', value_name='path') | to_nice_yaml }}
         
-        {{ '52:54:00' | random_mac }}
+        {{ '52:54:00' | community.general.random_mac }}
         {% for i in range(10, 20) %}
-        {{ ip_net | ipaddr(i) }}{% endfor %}
+        {{ ip_net | ansible.netcommon.ipaddr(i) }}{% endfor %}
 
         {{ text | hash('sha1') }}
         {{ text | hash('md5') }}
         {{ text | password_hash('sha512') }}
+
+
+Salt Filter:
+    data: |
+        test:
+          a: b
+          c: [1, 2, 3, 0]
+        my_text: yes, this is a TEST
+    template: |
+        {{ "2021/10/31"|strftime("%y") }}
+        {{ "tomorrow"|strftime }}
+
+        {{ test.c[0] | to_bool }}
+        {{ test.c | exactly_n_true(3) }}
+
+        {{ 'abcdefabcdef' | regex_search('BC(.*)', ignorecase=True) }}
+
+        {{ my_text | regex_replace(' ([a-z])', '__\\1', ignorecase=True) }}
+
+        {{ 'random' | uuid }}
+
+        {{ test.c | is_list }}
+        {{ test.c | is_iter }}
+        {{ test.c | min }}
+        {{ test.c | max }}
+        {{ test.c | avg }}
+
+        {{ test.c | union([4, 5, 6]) }}
+        {{ test.c | intersect([1, 2, 4]) }}
+        {{ test.c | symmetric_difference([2, 3, 4]) }}
+
+        {{ '0xabcd' | is_hex }}
+        {{ 'xyzt' | is_hex }}
+        {{ 'abcd' | contains_whitespace }}
+        {{ 'ab cd' | contains_whitespace }}
+
+
+        {{ 5 | check_whitelist_blacklist(whitelist=[5, 6, 7]) }}
+        {{ 5 | check_whitelist_blacklist(blacklist=[5, 6, 7]) }}
+
+        {{ 'wall of text' | to_bytes }}
+
+        md5:   {{ 'random' | md5 }}
+        sha256:{{ 'random' | sha256 }}
+        sha512:{{ 'random' | sha512 }}
+
+        {{ "camelsWillLoveThis" | to_snake_case }}
+        {{ "snake_case_for_the_win" | to_camelcase }}
+
+        {{ '192.168.0.1' | is_ip }}
+        {{ '192.168.0.1' | is_ipv4 }}
+        {{ 'fe80::' | is_ipv6 }}
+        {{ '192.168.0.1/30' | network_hosts }}
+
+        {{ '00:50' | gen_mac }}
+
+        {{ 'random' | base64_encode | base64_decode }}

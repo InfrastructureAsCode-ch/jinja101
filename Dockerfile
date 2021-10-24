@@ -22,8 +22,6 @@ RUN pip install "git+https://github.com/StackStorm/st2-rbac-backend.git@master#e
     && pip install "git+https://github.com/StackStorm/st2.git@v3.3.0#subdirectory=st2common" \
     && poetry install --no-dev --no-interaction --no-ansi
 
-RUN poetry install --no-dev --no-interaction --no-ansi
-
 COPY --chown=jinja101:jinja101 . .
 
 USER jinja101
