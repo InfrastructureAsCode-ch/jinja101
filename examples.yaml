@@ -225,9 +225,9 @@ Ansible Filter:
         {{ my_list1 | flatten | symmetric_difference(my_list2) }}
         {{ files | dict2items(key_name='file', value_name='path') | to_nice_yaml }}
         
-        {{ '52:54:00' | random_mac }}
+        {{ '52:54:00' | community.general.random_mac }}
         {% for i in range(10, 20) %}
-        {{ ip_net | ipaddr(i) }}{% endfor %}
+        {{ ip_net | ansible.netcommon.ipaddr(i) }}{% endfor %}
 
         {{ text | hash('sha1') }}
         {{ text | hash('md5') }}

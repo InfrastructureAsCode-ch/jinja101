@@ -5,19 +5,20 @@ description = ""
 authors = ["ubaumann <github@m.ubaumann.ch>"]
 
 [tool.poetry.dependencies]
-python = "^3.6"
-flask = "^1.1.2"
+python = "^3.8"
+flask = "^2.0.1"
 pyaml = "^20.4.0"
-gunicorn = "^20.0.4"
-ansible = "^2.9.11"
-salt = "^3001"
+gunicorn = "^20.1.0"
+ansible = "^4"
+salt = "^3004"
 netaddr = "^0.8.0"
-timelib = "^0.2.4"
+timelib = "^0.2.5"
 jmespath = "^0.10.0"
 
 [tool.poetry.dev-dependencies]
-black = "^19.10b0"
+black = "^21.6b0"
 pylama = "^7.7.1"
+rich = "^10.12.0"
 
 [build-system]
 requires = ["poetry>=0.12"]
