@@ -5,8 +5,6 @@ on:
     branches: [ master ]
     tags: ['*']
 
-env:
-  tag_name: latest
 
 jobs:
 
@@ -27,10 +25,17 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
 
-    - name: Set tag if not master
-      if: env.GITHUB_REF_NAME != 'master'
+    - name: Set tag for docker image
       run: |
-        echo "tag_name=$GITHUB_REF_NAME" >> $GITHUB_ENV
+        if [[ "${GITHUB_REF_NAME}" == "master" ]] || [[ "${GITHUB_REF_NAME}" == "main" ]] ; then
+          tag_name=latest
+        else
+          tag_name=${GITHUB_REF_NAME}
+        fi
+        echo "tag_name=${tag_name}" >> $GITHUB_ENV
+
+    - name: Echo tag
+      run: echo ${{ env.tag_name }}
     
     - name: Build and push
       uses: docker/build-push-action@v2
