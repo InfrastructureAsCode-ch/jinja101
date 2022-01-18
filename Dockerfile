@@ -11,8 +11,8 @@ ENV PATH="/root/.poetry/bin:$PATH" \
 
 RUN apt-get update && apt-get install curl -y \
     && rm -rf /var/lib/apt/lists/* \
-    && curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python \
-    && poetry config virtualenvs.in-project true
+    && curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python \
+    && poetry config virtualenvs.create false
 
 COPY --chown=jinja101:jinja101 pyproject.toml .
 COPY --chown=jinja101:jinja101 poetry.lock .

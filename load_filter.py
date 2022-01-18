@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 
 
@@ -6,23 +7,28 @@ def load_filter_ansible(env):
 
     for path in [
         str(x.resolve())
-        for x in Path(".venv/lib/python3.8/site-packages/ansible_collections/").glob(
-            "**/plugins/filter"
-        )
+        for x in Path(
+            f"{sys.base_prefix}/lib/python3.8/site-packages/ansible_collections/"
+        ).glob("**/plugins/filter")
         if "tests" not in str(x)
     ]:
         filter_loader.add_directory(path)
     for fp in filter_loader.all():
         for filter_name, filter in fp.filters().items():
             path_parts = fp._original_path.split("/")
-            if path_parts[-5:-3] == ['site-packages', 'ansible']:
+            if path_parts[-5:-3] == ["site-packages", "ansible"]:
                 env.filters[f"ansible.builtin.{filter_name}"] = filter
                 env.filters[filter_name] = filter
             else:
                 site_packages = path_parts.index("site-packages")
-                if path_parts[site_packages+2:-3] == ["community", "general"] or path_parts[site_packages+2:-3] == ["ansible", "netcommon"]:
+                if path_parts[site_packages + 2 : -3] == [
+                    "community",
+                    "general",
+                ] or path_parts[site_packages + 2 : -3] == ["ansible", "netcommon"]:
                     env.filters[filter_name] = filter
-                filter_name = '.'.join(path_parts[site_packages+2:-3] + [filter_name])
+                filter_name = ".".join(
+                    path_parts[site_packages + 2 : -3] + [filter_name]
+                )
                 env.filters[filter_name] = filter
 
     for fp in test_loader.all():
