@@ -289,3 +289,11 @@ Salt Filter:
         {{ '00:50' | gen_mac }}
 
         {{ 'random' | base64_encode | base64_decode }}
+
+ST2 Filter:
+    data: |
+        input: {'a': {'b': {'c': 1234} } }
+    template: |
+        # input  = {'a': {'b': {'c': 1234} } }
+        # result = [1234]
+        {{ input | jsonpath_query('a.b.c') }}
