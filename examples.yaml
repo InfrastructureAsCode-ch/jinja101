@@ -227,7 +227,7 @@ Ansible Filter:
         
         {{ '52:54:00' | community.general.random_mac }}
         {% for i in range(10, 20) %}
-        {{ ip_net | ansible.netcommon.ipaddr(i) }}{% endfor %}
+        {{ ip_net | ansible.utils.ipaddr(i) }}{% endfor %}
 
         {{ text | hash('sha1') }}
         {{ text | hash('md5') }}

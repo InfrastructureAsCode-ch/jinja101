@@ -1,12 +1,16 @@
-import json
 import jinja2
 import yaml
 from jinja2.sandbox import SandboxedEnvironment
-from flask import Flask, render_template, request, Response, url_for, jsonify
+from flask import Flask, render_template, request, jsonify
 from load_filter import load_filter_ansible, load_filter_salt, load_filter_st2
 
 app = Flask(__name__, static_url_path="/static")
-app.config['JSON_SORT_KEYS'] = False
+app.json.sort_keys = False
+app.config.update(
+    TITLE="Jinaj101",
+    SUBTITLE="Playground for jinja2 templates",
+    GITHUB="https://github.com/infrastructureAsCode-ch/jinja101/"
+)
 
 MAP_UNDEFINED = {
     "jinja2.Undefined": jinja2.Undefined,
@@ -21,12 +25,6 @@ NEWLINE_SEQUENCES = {"\\r": "\r", "\\n": "\n", "\\r\\n": "\r\n"}
 @app.route("/")
 def index():
     return render_template("index.html")
-
-
-@app.route("/demo")
-@app.route("/demo/<name>")
-def demo(name=False):
-    return render_template("demo.html", name=name)
 
 
 @app.route("/examples")
@@ -96,4 +94,4 @@ def rend():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")

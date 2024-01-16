@@ -1,0 +1,136 @@
+<div class="container-fluid">
+    <form id="templateForm" method="POST" action="rend">
+        <div class="row">
+            <div class="col">
+                <p>
+                    <button class="btn btn-primary mt20" type="button" data-toggle="collapse"
+                        data-target="#environmentSettings" aria-expanded="false"
+                        aria-controls="environmentSettings">
+                        Environment Settings
+                    </button>
+                </p>
+                <div class="collapse" id="environmentSettings">
+                    <p>
+                    <div class="card card-body">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="trim_blocks" name="trim_blocks">
+                            <label class="form-check-label" for="trim_blocks">trim_blocks</label>
+                            <small id="trimHelp" class="form-text text-muted">If this is set to True the first
+                                newline after a block is removed (block, not variable tag!). Defaults to
+                                False.</small>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="lstrip_blocks" name="lstrip_blocks">
+                            <label class="form-check-label" for="lstrip_blocks">lstrip_blocks</label>
+                            <small id="lstripHelp" class="form-text text-muted">If this is set to True leading
+                                spaces and tabs are stripped from the start of a line to a block. Defaults to
+                                False.</small>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="keep_trailing_newline"
+                                name="keep_trailing_newline">
+                            <label class="form-check-label"
+                                for="keep_trailing_newline">keep_trailing_newline</label>
+                            <small id="trailingHelp" class="form-text text-muted">Preserve the trailing newline
+                                when
+                                rendering templates. The default is False, which causes a single newline, if
+                                present, to be stripped from the end of the template.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="newline_sequence">newline_sequence</label>
+                            <input type="text" class="form-control" id="newline_sequence"
+                                aria-describedby="newlineHelp" placeholder="\n" value="\n" name="newline_sequence">
+                            <small id="newlineHelp" class="form-text text-muted">The sequence that starts a
+                                newline.
+                                Must be one of '\r', '\n' or '\r\n'. The default is '\n' which is a useful
+                                default
+                                for Linux and OS X systems as well as web applications.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="mr-sm-2" for="undefined">Extensions</label>
+                            <select class="custom-select" id="extensions" name="extensions" multiple>
+                                <option value="jinja2.ext.i18n">i18n</option>
+                                <option value="jinja2.ext.do">do</option>
+                                <option value="jinja2.ext.loopcontrols">loopcontrols</option>
+                                <option value="jinja2.ext.debug">debug</option>
+                            </select>
+                            <small id="extensionsHelp" class="form-text text-muted">List of Jinja extensions to
+                                use.
+                                This can either be import paths as strings or extension classes. For more
+                                information have a look at the extensions documentation.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="mr-sm-2" for="undefined">Undefined</label>
+                            <select class="custom-select" id="undefined" name="undefined">
+                                <option value="jinja2.Undefined">Undefined</option>
+                                <option value="jinja2.ChainableUndefined">ChainableUndefined</option>
+                                <option value="jinja2.DebugUndefined">DebugUndefined</option>
+                                <option value="jinja2.StrictUndefined">StrictUndefined</option>
+                            </select>
+                            <small id="undefinedHelp" class="form-text text-muted">Undefined or a subclass of it
+                                that is used to represent undefined values in the template</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="mr-sm-2" for="filter">Filter</label>
+                            <select class="custom-select" id="filter" name="filter">
+                                <option value="default">Default (Built-in)</option>
+                                <option value="ansible">Ansible</option>
+                                <option value="salt">SaltStack</option>
+                                <option value="st2">StackStorm</option>
+                            </select>
+                            <small id="filterHelp" class="form-text text-muted">Filter imported from tools</small>
+                        </div>
+
+                    </div>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label for="textData">Data <small>YAML</small></label>
+                    <textarea class="form-control show-spaces" id="textData" name="data" rows="20"></textarea>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label for="textTemplate">Template <small>jinja2</small></label>
+                    <textarea class="form-control show-spaces" id="textTemplate" name="template"
+                        rows="20"></textarea>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label for="textRendered" disabled>Rendered <small>Text</small></label>
+                    <textarea class="form-control show-spaces" id="textRendered" rows="20" disabled></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-auto">
+                <div>
+                    <button class="btn btn-primary" type="submit">
+                        Render Template
+                    </button>
+                </div>
+            </div>
+            <div class="col-auto mr-auto ">
+                <div class="dropdown">
+                    <button id="examples" class="btn btn-primary dropdown-toggle" type="button"
+                        data-toggle="dropdown">Examples
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                    </ul>
+                </div>
+            </div>
+        </div>
+</div>
+</form>
+</div>
