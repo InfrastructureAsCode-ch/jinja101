@@ -18,13 +18,13 @@ jmespath = "*"
 passlib = "*"
 
 [tool.poetry.dev-dependencies]
-black = "^23"
+black = "^24"
 pylama = "^8"
 rich = "^13"
 pytest = "^7.4.4"
 
 [tool.poetry.group.dev.dependencies]
-black = "^23.12.1"
+black = "^24.3.0"
 
 [build-system]
 requires = ["poetry>=0.12"]
