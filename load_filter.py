@@ -1,6 +1,5 @@
-import sys
+import sysconfig
 from pathlib import Path
-
 
 def load_filter_ansible(env):
     from ansible.plugins.loader import filter_loader, test_loader
@@ -8,31 +7,37 @@ def load_filter_ansible(env):
     for path in [
         str(x.resolve())
         for x in Path(
-            f"{sys.base_prefix}/lib/python3.8/site-packages/ansible_collections/"
-        ).glob("**/plugins/filter")
+            f"{sysconfig.get_path('purelib')}/ansible_collections/").glob(
+            "**/plugins/filter")
         if "tests" not in str(x)
     ]:
         filter_loader.add_directory(path)
+
     for fp in filter_loader.all():
-        for filter_name, filter in fp.filters().items():
-            path_parts = fp._original_path.split("/")
-            if path_parts[-5:-3] == ["site-packages", "ansible"]:
-                env.filters[f"ansible.builtin.{filter_name}"] = filter
+        filter_name = fp._load_name
+        filter = fp.j2_function
+        path_parts = fp._original_path.split("/")
+        site_packages = path_parts.index("site-packages")
+
+        if path_parts[site_packages : site_packages + 2] == [
+            "site-packages",
+            "ansible",
+        ]:
+            env.filters[f"ansible.builtin.{filter_name}"] = filter
+            env.filters[filter_name] = filter
+        else:
+            if path_parts[site_packages + 2 : -3] == [
+                "community",
+                "general",
+            ] or path_parts[site_packages + 2 : -3] == ["ansible", "netcommon"]:
                 env.filters[filter_name] = filter
-            else:
-                site_packages = path_parts.index("site-packages")
-                if path_parts[site_packages + 2 : -3] == [
-                    "community",
-                    "general",
-                ] or path_parts[site_packages + 2 : -3] == ["ansible", "netcommon"]:
-                    env.filters[filter_name] = filter
-                filter_name = ".".join(
-                    path_parts[site_packages + 2 : -3] + [filter_name]
-                )
-                env.filters[filter_name] = filter
+            filter_name = ".".join(
+                path_parts[site_packages + 2 : -3] + [filter_name]
+            )
+            env.filters[filter_name] = filter
 
     for fp in test_loader.all():
-        env.tests.update(fp.tests())
+        env.tests.update({fp.ansible_name: fp._function})
 
 
 def load_filter_salt(env):

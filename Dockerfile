@@ -1,5 +1,5 @@
 ARG PYTHON
-FROM python:3.8
+FROM python:3.10
 
 WORKDIR /jinja101
 RUN useradd -m jinja101
@@ -19,7 +19,8 @@ COPY --chown=jinja101:jinja101 pyproject.toml .
 
 # poetry does not support subdirectory yet
 RUN pip install "git+https://github.com/StackStorm/st2-rbac-backend.git@master#egg=st2-rbac-backend" \
-    && pip install "git+https://github.com/StackStorm/st2.git@v3.3.0#subdirectory=st2common" \
+    && pip install orquesta "git+https://github.com/StackStorm/orquesta.git@v1.6.0" \
+    && pip install "git+https://github.com/StackStorm/st2.git@master#subdirectory=st2common" \
     && poetry install --no-dev --no-interaction --no-ansi
 
 

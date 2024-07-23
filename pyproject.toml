@@ -5,15 +5,17 @@ description = "Playground for jinja2 templates"
 authors = ["ubaumann <github@m.ubaumann.ch>"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.10"
 flask = "*"
 pyaml = "*"
 gunicorn = "*"
 ansible = "*"
+ansible-core = "^2.17"
 salt = "*"
 netaddr = "*"
 timelib = "*"
 jmespath = "*"
+passlib = "*"
 
 [tool.poetry.dev-dependencies]
 black = "^23"
