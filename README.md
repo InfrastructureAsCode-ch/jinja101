@@ -8,13 +8,13 @@ This repo uses poetry
 ### Install requirements
 
 ```bash
-poetry install
+uv sync
 ```
 
 ### Open shell with venv and run app
 
 ```bash
-poetry shell
+uv run bash
 ```
 
 ### Run app (first open shell)

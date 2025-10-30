@@ -1,31 +1,26 @@
-[tool.poetry]
+[project]
 name = "jinja101"
 version = "0.2.0"
 description = "Playground for jinja2 templates"
-authors = ["ubaumann <github@m.ubaumann.ch>"]
+authors = [
+    {name = "ubaumann", email = "github@m.ubaumann.ch"},
+]
+requires-python = ">=3.8"
+dependencies = [
+    "flask",
+    "pyaml",
+    "gunicorn",
+    "ansible",
+    "salt",
+    "netaddr",
+    "timelib",
+    "jmespath",
+]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-flask = "*"
-pyaml = "*"
-gunicorn = "*"
-ansible = "*"
-ansible-core = "^2.17"
-salt = "*"
-netaddr = "*"
-timelib = "*"
-jmespath = "*"
-passlib = "*"
-
-[tool.poetry.dev-dependencies]
-black = "^24"
-pylama = "^8"
-rich = "^13"
-pytest = "^7.4.4"
-
-[tool.poetry.group.dev.dependencies]
-black = "^24.3.0"
-
-[build-system]
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+[dependency-groups]
+dev = [
+    "black>=23.12.1",
+    "pylama>=8",
+    "rich>=13",
+    "pytest>=7.4.4",
+]
